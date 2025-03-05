@@ -2,26 +2,6 @@
   hosts: all
   become: yes
   tasks:
-    - name: Install required packages
-      apt:
-        name: ["wget", "curl", "lsb-release"]
-        state: present
-        update_cache: yes
-
-    - name: Install Zabbix repository
-      apt:
-        deb: "https://repo.zabbix.com/zabbix/7.4/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.4+debian12_all.debb"
-        state: present
-
-    - name: Update package list
-      apt:
-        update_cache: yes
-
-    - name: Install Zabbix Agent
-      apt:
-        name: zabbix-agent
-        state: present
-
     - name: Configure Zabbix Agent for Active Registration
       lineinfile:
         path: /etc/zabbix/zabbix_agentd.conf
