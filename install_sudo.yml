@@ -1,0 +1,15 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Sprawdź, czy sudo jest zainstalowane
+      shell: command -v sudo
+      register: sudo_check
+      ignore_errors: true
+
+    - name: Zainstaluj sudo (jeśli nie ma)
+      become: yes
+      become_method: su  # Używa `su`, gdy `sudo` nie jest dostępne
+      package:
+        name: sudo
+        state: present
+      when: sudo_check.rc != 0
