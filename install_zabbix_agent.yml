@@ -1,0 +1,26 @@
+- name: Install and configure Zabbix Agent
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Zabbix Agent
+      package:
+        name: zabbix-agent
+        state: present
+
+    - name: Configure Zabbix Agent for Active Registration
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^ServerActive='
+        line: 'ServerActive=192.168.253.50'
+
+    - name: Set HostMetadata to Linux
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^HostMetadata='
+        line: 'HostMetadata=Linux'
+
+    - name: Restart Zabbix Agent
+      systemd:
+        name: zabbix-agent
+        state: restarted
+        enabled: yes
