@@ -1,0 +1,32 @@
+---
+- name: Naprawa problemów z repozytoriami i instalacja Zabbix Agent
+  hosts: all
+  become: true
+  tasks:
+    - name: Zaktualizowanie listy pakietów
+      apt:
+        update_cache: yes
+
+    - name: Naprawa brakujących zależności
+      apt:
+        install_recommends: no
+        upgrade: dist
+        state: latest
+        autoremove: yes
+
+    - name: Wyczyść pamięć podręczną pakietów
+      apt:
+        autoclean: yes
+
+    - name: Zainstaluj pakiet Zabbix Agent
+      apt:
+        name: zabbix-agent
+        state: present
+
+    - name: Sprawdź dostępność miejsca na dysku
+      shell: df -h
+      register: disk_space
+
+    - name: Wyświetl dostępność miejsca na dysku
+      debug:
+        msg: "{{ disk_space.stdout }}"
