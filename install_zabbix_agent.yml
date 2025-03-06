@@ -6,7 +6,7 @@
       lineinfile:
         path: /etc/zabbix/zabbix_agentd.conf
         regexp: '^ServerActive='
-        line: 'ServerActive=192.168.253.50'
+        line: 'ServerActive=192.168.250.8'
 
     - name: Set HostMetadata to Linux
       lineinfile:
